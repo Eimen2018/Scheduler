@@ -23,10 +23,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  _currentTime() {
-    return "${DateTime.now().hour} : 0${DateTime.now().minute}";
-  }
-
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
@@ -39,6 +35,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       key: _scaffoldkey,
       drawer: AppDrawer(),
+      endDrawer: AppEndDrawer(),
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -61,12 +58,14 @@ class MyHomePage extends StatelessWidget {
               Icons.notifications,
               color: Colors.grey,
             ),
-            onPressed: () {},
+            onPressed: () {
+              _scaffoldkey.currentState.openEndDrawer();
+            },
           )
         ],
       ),
       body: SlidingUpPanel(
-        minHeight: 75.0,
+        minHeight: 65.0,
         collapsed: _collapsed(),
         backdropEnabled: true,
         panel: _floatingPanel(),
@@ -201,11 +200,11 @@ class MyHomePage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 48.0),
                   child: Text(
-                    'Tasks Coming Up',
+                    'Tasks Coming Up...',
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Oxygen',
-                        fontSize: 17.0),
+                        fontSize: 20.0),
                   ),
                 ),
               ],
@@ -251,19 +250,36 @@ class Tasks extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             decoration: BoxDecoration(
-                color: Colors.black,
-                border: Border.all(width: 1.0),
-                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+              // color: Colors.black,
+              // border: Border.all(width: 0.0),
+              // borderRadius: BorderRadius.all(
+              //   Radius.circular(20.0),
+            ),
+          ),
+          Positioned(
+            left: 0.0,
+            bottom: 0.0,
+            width: 150.0,
+            height: 40.0,
+            child: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [Color.fromRGBO(161, 196, 253, 1), Colors.white12.withOpacity(0.1)],
+              )),
+            ),
           ),
           Positioned(
             left: 10.0,
-            bottom: 20.0,
+            bottom: 10.0,
             child: Row(
               children: <Widget>[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(taskname, style: TextStyle(fontFamily: 'Oxygen'))
+                    Text(taskname, style: TextStyle(fontFamily: 'Oxygen',fontWeight: FontWeight.bold)),
+                    Text(tasktime, style: TextStyle(fontFamily: 'Oxygen'))
                   ],
                 )
               ],
@@ -315,6 +331,32 @@ class _AppDrawerState extends State<AppDrawer> {
           ),
           ListTile(
             title: Text('Drawer'),
+          )
+        ],
+      ),
+    );
+  }
+}
+class AppEndDrawer extends StatefulWidget {
+  @override
+  _AppEndDrawerState createState() => _AppEndDrawerState();
+}
+
+class _AppEndDrawerState extends State<AppEndDrawer> {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: <Widget>[
+          ListTile(
+            title: Text('E-Commerce',style: TextStyle(
+                color: Colors.black, fontFamily: 'Oxygen', fontSize: 22.0),),
+            subtitle: Text('Requested A make up on thursday'),
+          ),
+          ListTile(
+            title: Text('Knowledge Management System',style: TextStyle(
+                color: Colors.black, fontFamily: 'Oxygen', fontSize: 22.0),),
+            subtitle: Text('Released test 1 Results'),
           )
         ],
       ),
